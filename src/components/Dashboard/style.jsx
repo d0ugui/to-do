@@ -110,6 +110,10 @@ export const Content = styled.header`
   .completed {
     li {
       text-decoration: line-through;
+
+      input {
+        outline: none;
+      }
     }
   }
 `;
