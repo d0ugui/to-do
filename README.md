@@ -2,7 +2,7 @@
 
 ## 📖 Projeto
 
-O projeto foi criado usando o boilerplate, create-react-app. A finalidade do projeto foi colocar em prática alguns conhecimentos adquiridos durante o estudo de ReactJS. O template apesar de básico, foi inspirado em um desafio da Rocketseat e codado totalmente por mim utilizando styled-components. A biblioteca UUID foi utilizada para gerar o identificador único de cada tarefa adicionada. 
+O projeto foi criado usando o boilerplate, create-react-app. A finalidade do projeto foi colocar em prática alguns conhecimentos adquiridos durante o estudo de ReactJS. O layout apesar de básico, foi inspirado em um desafio da Rocketseat e codado totalmente por mim utilizando styled-components. A biblioteca UUID foi utilizada para gerar o identificador único de cada tarefa adicionada. 
 
 ## 🧪 Tecnologias
 
@@ -35,4 +35,4 @@ O app estará disponível no seu browser pelo endereço http://localhost:3000/
 
 ## 📝 License
 
-Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
+Esse projeto está sob a licença MIT.
