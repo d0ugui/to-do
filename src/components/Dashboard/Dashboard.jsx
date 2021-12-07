@@ -1,47 +1,68 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc
+} from 'firebase/firestore';
 
+import { app } from '../../firebase/config';
 import { FiCheckSquare, FiTrash2 } from 'react-icons/fi'
-import { v4 as uuidv4 } from 'uuid';
-
 import { Container, Content } from './style';
 
 export function Dashboard() {
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState([]);
 
+  //* Init firebase services
+  const db = getFirestore(app);
+
+  //* Collection ref
+  const colRef = collection(db, 'tasks');
+
+  //* Readltime Collection data
+  useEffect(() => {
+    onSnapshot(colRef, (snapshot) => {
+      let tasksDb = [];
+      snapshot.docs.forEach((doc) => {
+        tasksDb.push({ ...doc.data(), id: doc.id })
+      })
+
+      setTasks([...tasksDb]);
+    });
+  }, [])
+
+
+  //* Add new task in database
   function handleAddTask() {
     if (!newTask) {
       return;
     }
 
     const task = {
-      id: uuidv4(),
       title: newTask,
-      completed: false,
+      isCompleted: false,
     }
 
-    setTasks([...tasks, task]);
+    addDoc(colRef, task);
     setNewTask('');
   }
 
+  //* Delete task in database
   function handleDeleteTask(id) {
-    const result = tasks.filter(task => task.id !== id);
-
-    setTasks(result);
+    const docRef = doc(db, 'tasks', id);
+    deleteDoc(docRef);
   }
 
-  function handleTaskCompleted(id) {
-    const newTask = tasks.map(task => {
-      if (task.id === id) {
-        return {
-          ...task,
-          completed: !task.completed,
-          }
-       }
-      return task;
-    })
-
-    setTasks(newTask)
+  //* updating status task 
+  function handleTaskCompleted(task) {
+    const docRef = doc(db, 'tasks', task.id);
+    updateDoc(docRef, {
+      isCompleted: !task.isCompleted
+    });
   }
 
   return (
@@ -52,13 +73,13 @@ export function Dashboard() {
 
           <div className="btn">
             <label className="sr-only" htmlFor="tarefa">Adicionar nova tarefa</label>
-            <input 
-              id="tarefa" 
-              type="text" 
+            <input
+              id="tarefa"
+              type="text"
               onChange={(e) => setNewTask(e.target.value)}
-              value={newTask} 
+              value={newTask}
               placeholder="Adicionar nova terefa" />
-            <button onClick={handleAddTask}><FiCheckSquare/></button>
+            <button onClick={handleAddTask}><FiCheckSquare /></button>
           </div>
         </div>
 
@@ -66,9 +87,9 @@ export function Dashboard() {
           <ul>
             {tasks.map((task) => {
               return (
-                <div key={task.id} className={task.completed ? 'completed' : ''}>
+                <div key={task.id} className={task.isCompleted ? 'completed' : ''}>
                   <li>
-                    <input type="checkbox" onClick={() => handleTaskCompleted(task.id)}/>
+                    <input type="checkbox" onClick={() => handleTaskCompleted(task)} checked={task.isCompleted} />
                     {task.title}
                   </li>
                   <button onClick={() => handleDeleteTask(task.id)}><FiTrash2 /></button>
