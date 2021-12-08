@@ -6,7 +6,10 @@ import {
   addDoc,
   deleteDoc,
   doc,
-  updateDoc
+  updateDoc,
+  query,
+  orderBy,
+  serverTimestamp
 } from 'firebase/firestore';
 
 import { app } from '../../firebase/config';
@@ -23,9 +26,12 @@ export function Dashboard() {
   //* Collection ref
   const colRef = collection(db, 'tasks');
 
+  //* Queries
+  const q = query(colRef, orderBy('createdAt'));
+
   //* Readltime Collection data
   useEffect(() => {
-    onSnapshot(colRef, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       let tasksDb = [];
       snapshot.docs.forEach((doc) => {
         tasksDb.push({ ...doc.data(), id: doc.id })
@@ -33,7 +39,7 @@ export function Dashboard() {
 
       setTasks([...tasksDb]);
     });
-  }, [])
+  }, [q])
 
 
   //* Add new task in database
@@ -45,6 +51,7 @@ export function Dashboard() {
     const task = {
       title: newTask,
       isCompleted: false,
+      createdAt: serverTimestamp()
     }
 
     addDoc(colRef, task);
@@ -89,7 +96,7 @@ export function Dashboard() {
               return (
                 <div key={task.id} className={task.isCompleted ? 'completed' : ''}>
                   <li>
-                    <input type="checkbox" onClick={() => handleTaskCompleted(task)} checked={task.isCompleted} />
+                    <input type="checkbox" onChange={() => handleTaskCompleted(task)} checked={task.isCompleted} />
                     {task.title}
                   </li>
                   <button onClick={() => handleDeleteTask(task.id)}><FiTrash2 /></button>
