@@ -29,7 +29,7 @@ export function Dashboard() {
     setTasks((prevState) => prevState.filter((task) => task.id != id));
   }
 
-  //* updating status task 
+  //* complete status task 
   function handleTaskCompleted(id) {
     setTasks((prevState) => prevState.map((task) => {
       if (task.id === id) {

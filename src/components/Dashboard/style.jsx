@@ -4,7 +4,7 @@ export const Container = styled.main`
   max-width: 1120px;
   margin: 0 auto;
 
-  background: #fff;
+  background: ${({ theme }) => theme.containerColor};
   border-radius: 24px;
 
   margin-top: -10rem;
@@ -27,6 +27,7 @@ export const Content = styled.header`
         height: 40px;
         font-size: 14px;
         padding: 10px 15px;
+        outline: none;
 
         border: none;
         border-radius: 6px;
