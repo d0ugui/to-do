@@ -1,45 +1,22 @@
 import { useState, useEffect } from 'react'
-import {
-  getFirestore,
-  collection,
-  onSnapshot,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
-  query,
-  orderBy,
-  serverTimestamp
-} from 'firebase/firestore';
 
-import { app } from '../../firebase/config';
 import { FiCheckSquare, FiTrash2 } from 'react-icons/fi'
 import { Container, Content } from './style';
 
 export function Dashboard() {
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState([]);
-
-  //* Init firebase services
-  const db = getFirestore(app);
-
-  //* Collection ref
-  const colRef = collection(db, 'tasks');
-
-  //* Queries
-  const q = query(colRef, orderBy('createdAt'));
-
-  //* Readltime Collection data
-  useEffect(() => {
-    onSnapshot(q, (snapshot) => {
-      let tasksDb = [];
-      snapshot.docs.forEach((doc) => {
-        tasksDb.push({ ...doc.data(), id: doc.id })
-      })
-
-      setTasks([...tasksDb]);
-    });
-  }, [q])
+  const [tasks, setTasks] = useState([
+    {
+      id: Math.random(),
+      title: 'Estudar React Native',
+      isCompleted: false,
+    },
+    {
+      id: Math.random(),
+      title: 'Estudar Next.js',
+      isCompleted: false,
+    }
+  ]);
 
 
   //* Add new task in database
@@ -50,26 +27,20 @@ export function Dashboard() {
 
     const task = {
       title: newTask,
-      isCompleted: false,
-      createdAt: serverTimestamp()
+      isCompleted: false
     }
 
-    addDoc(colRef, task);
     setNewTask('');
   }
 
   //* Delete task in database
   function handleDeleteTask(id) {
-    const docRef = doc(db, 'tasks', id);
-    deleteDoc(docRef);
+    
   }
 
   //* updating status task 
   function handleTaskCompleted(task) {
-    const docRef = doc(db, 'tasks', task.id);
-    updateDoc(docRef, {
-      isCompleted: !task.isCompleted
-    });
+    
   }
 
   return (
@@ -79,7 +50,9 @@ export function Dashboard() {
           <h1>Minhas Tasks</h1>
 
           <div className="btn">
-            <label className="sr-only" htmlFor="tarefa">Adicionar nova tarefa</label>
+            <label className="sr-only" htmlFor="tarefa">
+              Adicionar nova tarefa
+            </label>
             <input
               id="tarefa"
               type="text"
