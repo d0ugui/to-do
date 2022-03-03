@@ -1,46 +1,45 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { Users } from '../../mock/users';
 
 import { FiCheckSquare, FiTrash2 } from 'react-icons/fi'
 import { Container, Content } from './style';
 
 export function Dashboard() {
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState([
-    {
-      id: Math.random(),
-      title: 'Estudar React Native',
-      isCompleted: false,
-    },
-    {
-      id: Math.random(),
-      title: 'Estudar Next.js',
-      isCompleted: false,
-    }
-  ]);
+  const [tasks, setTasks] = useState(Users);
 
 
-  //* Add new task in database
+  //* Add new task
   function handleAddTask() {
     if (!newTask) {
       return;
     }
 
     const task = {
+      id: Math.random(),
       title: newTask,
       isCompleted: false
     }
 
-    setNewTask('');
+    setTasks((prevState) => [...prevState, task]);
   }
 
-  //* Delete task in database
+  //* Delete task
   function handleDeleteTask(id) {
-    
+    setTasks((prevState) => prevState.filter((task) => task.id != id));
   }
 
   //* updating status task 
-  function handleTaskCompleted(task) {
-    
+  function handleTaskCompleted(id) {
+    setTasks((prevState) => prevState.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          isCompleted: !task.isCompleted
+        }
+      }
+      return task;
+    }))
   }
 
   return (
@@ -67,12 +66,18 @@ export function Dashboard() {
           <ul>
             {tasks.map((task) => {
               return (
-                <div key={task.id} className={task.isCompleted ? 'completed' : ''}>
+                <div key={task.id} className={task.isCompleted && 'completed'}>
                   <li>
-                    <input type="checkbox" onChange={() => handleTaskCompleted(task)} checked={task.isCompleted} />
+                    <input 
+                      type="checkbox" 
+                      onChange={() => handleTaskCompleted(task.id)} 
+                      checked={task.isCompleted} 
+                    />
                     {task.title}
                   </li>
-                  <button onClick={() => handleDeleteTask(task.id)}><FiTrash2 /></button>
+                  <button onClick={() => handleDeleteTask(task.id)}>
+                    <FiTrash2 />
+                  </button>
                 </div>
               )
             })}
