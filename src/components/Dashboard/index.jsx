@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Users } from '../../mock/users';
+import { Link } from 'react-router-dom';
 
 import { FiCheckSquare, FiTrash2 } from 'react-icons/fi'
 import { Container, Content } from './style';
-import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 export function Dashboard({ user }) {
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState(Users);
+  const [tasks, setTasks] = useState([]);
 
   //* Getting todo tasks
   useEffect(() => {
@@ -22,7 +21,7 @@ export function Dashboard({ user }) {
   }, [])
 
   //* Add new task
-  function handleAddTask() {
+  async function handleAddTask() {
     if (!newTask) {
       return;
     }
@@ -32,6 +31,15 @@ export function Dashboard({ user }) {
       title: newTask,
       completed: false
     }
+
+    const newResource = await api.post(`/users/${user.id}/todos`, {
+      id: user.id,
+      title: newTask,
+      body: 'Foo', 
+      userId: user.id
+    });
+
+    console.log(newResource)
 
     setTasks((prevState) => [task, ...prevState]);
 
