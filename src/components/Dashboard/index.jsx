@@ -1,13 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Users } from '../../mock/users';
 
 import { FiCheckSquare, FiTrash2 } from 'react-icons/fi'
 import { Container, Content } from './style';
+import { Link } from 'react-router-dom';
+import api from '../../services/api';
 
-export function Dashboard() {
+export function Dashboard({ user }) {
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState(Users);
 
+  //* Getting todo tasks
+  useEffect(() => {
+    async function getTodo() {
+      const { data } = await api.get(`/users/${user.id}/todos`);
+
+      setTasks(data);
+    };
+
+    getTodo();
+  }, [])
 
   //* Add new task
   function handleAddTask() {
@@ -18,15 +30,17 @@ export function Dashboard() {
     const task = {
       id: Math.random(),
       title: newTask,
-      isCompleted: false
+      completed: false
     }
 
-    setTasks((prevState) => [...prevState, task]);
+    setTasks((prevState) => [task, ...prevState]);
+
+    setNewTask('');
   }
 
   //* Delete task
   function handleDeleteTask(id) {
-    setTasks((prevState) => prevState.filter((task) => task.id != id));
+    setTasks((prevState) => prevState.filter((task) => task.id !== id));
   }
 
   //* complete status task 
@@ -35,7 +49,7 @@ export function Dashboard() {
       if (task.id === id) {
         return {
           ...task,
-          isCompleted: !task.isCompleted
+          completed: !task.completed
         }
       }
       return task;
@@ -44,9 +58,14 @@ export function Dashboard() {
 
   return (
     <Container>
+      <Link to="/">
+        Voltar
+      </Link>
       <Content>
         <div className="wrapper">
-          <h1>Minhas Tasks</h1>
+          <h1>
+            { user ? `Usuário: ${user.user}` : 'Minhas tasks'}
+          </h1>
 
           <div className="btn">
             <label className="sr-only" htmlFor="tarefa">

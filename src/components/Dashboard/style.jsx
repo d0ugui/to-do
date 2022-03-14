@@ -8,6 +8,18 @@ export const Container = styled.main`
   border-radius: 24px;
 
   margin-top: -10rem;
+  position: relative;
+
+  a {
+    text-decoration: none;
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    padding: 5px 10px;
+
+    color: var(--red);
+    font-weight: 600;
+  }
 `;
 
 export const Content = styled.header`
