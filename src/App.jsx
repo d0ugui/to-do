@@ -8,7 +8,7 @@ import themes from './styles/themes/index';
 
 function App() {
   return (
-   <ThemeProvider theme={themes.dark}>
+   <ThemeProvider theme={themes.light}>
       <Header />
       <Dashboard />
       <GlobalStyle/>
