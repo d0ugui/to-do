@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { FiCheckSquare, FiTrash2 } from 'react-icons/fi';
 import { Container, Content } from './style';
 
-export function Dashboard({ initialTasks }) {
+export function Dashboard({ initialTasks, onSubmit}) {
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState(initialTasks);
 
@@ -47,7 +47,10 @@ export function Dashboard({ initialTasks }) {
         <div className="wrapper">
           <h1>Minhas Tasks</h1>
 
-          <div className="btn">
+          <form 
+            className="btn"
+            onSubmit={onSubmit ? onSubmit : handleAddTask} 
+          >
             <label className="sr-only" htmlFor="tarefa">
               Adicionar nova tarefa
             </label>
@@ -57,13 +60,10 @@ export function Dashboard({ initialTasks }) {
               onChange={(e) => setNewTask(e.target.value)}
               value={newTask}
               placeholder="Adicionar nova terefa" />
-            <button 
-              className="addTask" 
-              onClick={handleAddTask}
-            >
+            <button data-testid="addTask">
               <FiCheckSquare />
             </button>
-          </div>
+          </form>
         </div>
 
         <div className="task-list">

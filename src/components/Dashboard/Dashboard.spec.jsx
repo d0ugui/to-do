@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
 
 import { Dashboard } from "./Dashboard";
@@ -8,6 +8,8 @@ import { UsersTests } from "../../mock/userTests";
 
 
 describe('Dashboard component', () => {
+  const onSubmit = jest.fn();
+
   it('should render a to-do list with items', async () => {
     const { getByText, queryByText, rerender, unmount } = render(<Dashboard initialTasks={Users} />)
 
@@ -21,15 +23,19 @@ describe('Dashboard component', () => {
     expect(queryByText('Estudar Soliditys')).not.toBeInTheDocument()
   })
 
-  it('should be able to add new item to the list', async () => {
-    const { container, getByText, getByPlaceholderText, findByText } = render(<Dashboard initialTasks={[]} />)
+  it('should invoke onSubmit when form is submitted', async () => {
+    onSubmit.mockImplementation(event => {
+      event.preventDefault();
+    });
 
-    const inputElement = getByPlaceholderText('Adicionar nova terefa')
-    const addButton = getByText('Adicionar')
+    const { getByTestId, getByPlaceholderText } = render(<Dashboard onSubmit={onSubmit} />)
 
-    await userEvent.type(inputElement, 'Novo');
-    await userEvent.click(addButton);
+    const inputElement = getByPlaceholderText ('Adicionar nova terefa')
+    const addButton = getByTestId('addTask')
 
-    expect(await findByText('Novo')).toBeInTheDocument();
+    fireEvent.change(inputElement, { target: { value: 'testando' } })
+    fireEvent.click(addButton)
+
+    expect(onSubmit).toHaveBeenCalled() 
   })
 })
