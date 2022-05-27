@@ -1,5 +1,4 @@
 import { render, fireEvent } from "@testing-library/react";
-import userEvent from '@testing-library/user-event';
 
 import { Dashboard } from "./Dashboard";
 
@@ -8,9 +7,9 @@ import { UsersTests } from "../../mock/userTests";
 
 
 describe('Dashboard component', () => {
-  const onSubmit = jest.fn();
+  const onSubmit = jest.fn((e) => e.preventDefault());
 
-  it('should render a to-do list with items', async () => {
+  it('should render a to-do list with items', () => {
     const { getByText, queryByText, rerender, unmount } = render(<Dashboard initialTasks={Users} />)
 
     expect(getByText('Estudar React')).toBeInTheDocument()
@@ -23,11 +22,7 @@ describe('Dashboard component', () => {
     expect(queryByText('Estudar Soliditys')).not.toBeInTheDocument()
   })
 
-  it('should invoke onSubmit when form is submitted', async () => {
-    onSubmit.mockImplementation(event => {
-      event.preventDefault();
-    });
-
+  it('should invoke onSubmit when form is submitted', () => {
     const { getByTestId, getByPlaceholderText } = render(<Dashboard onSubmit={onSubmit} />)
 
     const inputElement = getByPlaceholderText ('Adicionar nova terefa')

@@ -79,7 +79,7 @@ export function Dashboard({ initialTasks, onSubmit}) {
                     />
                     {task.title}
                   </li>
-                  <button className="remove" onClick={() => handleDeleteTask(task.id)}>
+                  <button className="remove" onClick={() => handleDeleteTask(task.id)} data-testid="remover">
                     <FiTrash2 />
                   </button>
                 </div>
