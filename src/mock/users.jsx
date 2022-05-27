@@ -1,7 +1,7 @@
 export const Users = [
   {
     id: Math.random(),
-    title: 'Estudar React Native',
+    title: 'Estudar React',
     isCompleted: false,
   },
   {

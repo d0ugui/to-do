@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { Users } from '../../mock/users';
 
-import { FiCheckSquare, FiTrash2 } from 'react-icons/fi'
+import { FiCheckSquare, FiTrash2 } from 'react-icons/fi';
 import { Container, Content } from './style';
 
-export function Dashboard() {
+export function Dashboard({ initialTasks }) {
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState(Users);
+  const [tasks, setTasks] = useState(initialTasks);
 
 
   //* Add new task
@@ -26,7 +25,7 @@ export function Dashboard() {
 
   //* Delete task
   function handleDeleteTask(id) {
-    setTasks((prevState) => prevState.filter((task) => task.id != id));
+    setTasks((prevState) => prevState.filter((task) => task.id !== id));
   }
 
   //* complete status task 
@@ -58,15 +57,20 @@ export function Dashboard() {
               onChange={(e) => setNewTask(e.target.value)}
               value={newTask}
               placeholder="Adicionar nova terefa" />
-            <button onClick={handleAddTask}><FiCheckSquare /></button>
+            <button 
+              className="addTask" 
+              onClick={handleAddTask}
+            >
+              <FiCheckSquare />
+            </button>
           </div>
         </div>
 
         <div className="task-list">
           <ul>
-            {tasks.map((task) => {
+            {tasks?.map((task) => {
               return (
-                <div key={task.id} className={task.isCompleted && 'completed'}>
+                <div key={task.id} className={task.isCompleted ? 'completed' : 'uncompleted'}>
                   <li>
                     <input 
                       type="checkbox" 
@@ -75,7 +79,7 @@ export function Dashboard() {
                     />
                     {task.title}
                   </li>
-                  <button onClick={() => handleDeleteTask(task.id)}>
+                  <button className="remove" onClick={() => handleDeleteTask(task.id)}>
                     <FiTrash2 />
                   </button>
                 </div>
