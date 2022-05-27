@@ -4,16 +4,13 @@
 
 O projeto foi criado usando o boilerplate, create-react-app. A finalidade do projeto foi colocar em prática alguns conhecimentos adquiridos durante o estudo de ReactJS. O layout apesar de básico, foi inspirado em um desafio da Rocketseat e codado totalmente por mim utilizando styled-components. A biblioteca UUID foi utilizada para gerar o identificador único de cada tarefa adicionada. 
 
-A principio a ideia era usar dados locais, sem persistência, mas com o passar do tempo e a continuidade dos meus estudos, acabei encontrando o Firebase (Back-end As a Service), acabou que integrei a aplicação aos services Firestore Database, fazendo com que os dados persistam no banco de dados. 
+PS: A principio a ideia era usar dados locais, sem persistência, mas com o passar do tempo e a continuidade dos meus estudos, acabei encontrando o Firebase (Back-end As a Service), acabou que integrei a aplicação aos services Firestore Database, fazendo com que os dados persistam no banco de dados. 
+
+PS (2): Adicionei ao projeto alguns testes unitários como base da minha introdução ao uso de Jest e React testing library.
 
 ## 🧪 Tecnologias
 
-Esse projeto foi desenvolvido com as seguintes tecnologias e bibliotecas: 
-
-- [React](https://reactjs.org)
-- [Styled-components](https://styled-components.com/)
-- [UUID](https://www.npmjs.com/package/uuid)
-- [Firebase](https://firebase.google.com/?hl=pt)
+ [![My Skills](https://skillicons.dev/icons?i=react,styledcomponents,jest)](https://skillicons.dev)
 
 ## 🚀 Como executar
 
